@@ -1,12 +1,7 @@
 # Coffee Shop Simulator
 
+# imports.
 import random
-
-day = 1
-
-cash = 100.00
-
-coffee = 100
 
 # Sales list of Dictionaries
 # sales = [
@@ -33,13 +28,13 @@ coffee = 100
 #     }
 #     ]
 # Create an empty sales list.
-sales = []
-def welcome():
+
+def welcome() -> str:
     print('Welcome to the Coffee Shop Simulator.')
     print('Version 1')
     print("Let's collect some information before we start.\n")
 
-def prompt(display='Please enter a response', require=True):
+def prompt(display='Please enter a response', require=True) -> str:
     if require:
         userField = False
         while not userField:
@@ -48,17 +43,42 @@ def prompt(display='Please enter a response', require=True):
         userField = input(display + ' ')
     return userField
 
-def dailyStats(cashOnHand, weather, coffeeInv):
-    print(f'You have ${cashOnHand:.2f} cash on hand and the temperature is {weather} degrees.')
-    print(f'You have enough coffee on hand to make {coffeeInv} cups of coffee.\n')
-
-def convertToFloat(num):
+def convertToFloat(num: int) -> float:
     # If the conversion fails, make it zero (0).
     try:
         num = float(num)
     except ValueError:
         return 0
     return num
+
+def xOFy(x: int, y: int) -> list:
+    numList = []
+    for i in range(x):
+        numList.append(y)
+    return numList
+
+class CoffeeShopSim:
+
+    def __init__(self, playerName, shopName):
+        self.playerName = playerName
+        self.shopName = shopName
+        self.day = 1
+        self.cash = 100.00
+        self.coffeeInv = 100
+        self.sales = []
+        self.temps = self.setTemps()
+    
+    def run(self):
+        print("\nLet's get started!\n")
+    
+        running = True
+        while running:
+            # Display the day with a fancy header.
+            self.dayHeader()
+
+def dailyStats(cashOnHand, weather, coffeeInv):
+    print(f'You have ${cashOnHand:.2f} cash on hand and the temperature is {weather} degrees.')
+    print(f'You have enough coffee on hand to make {coffeeInv} cups of coffee.\n')
 
 def getWeather():
     # Generate a random temp between 20 and 90.
