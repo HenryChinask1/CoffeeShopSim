@@ -3,32 +3,6 @@
 # imports.
 import random
 
-# Sales list of Dictionaries
-# sales = [
-#     {
-#         'day': 1,
-#         'coffeeInv': 100,
-#         'advertising': '10',
-#         'temp': 69
-#         'cupsSold': 16
-#     },
-#     {
-#         'day': 2,
-#         'coffeeInv': 84,
-#         'advertising': '15',
-#         'temp': 72,
-#         'cupsSold': 20
-#     },
-#     {
-#         'day': 2,
-#         'coffeeInv': 64,
-#         'advertising': '5',
-#         'temp': 78,
-#         'cupsSold': 10
-#     }
-#     ]
-# Create an empty sales list.
-
 def welcome() -> str:
     print('Welcome to the Coffee Shop Simulator.')
     print('Version 1')
@@ -58,6 +32,9 @@ def xOFy(x: int, y: int) -> list:
     return numList
 
 class CoffeeShopSim:
+
+    TEMPMIN = 20
+    TEMPMAX = 91
 
     def __init__(self, playerName, shopName):
         self.playerName = playerName
@@ -102,7 +79,7 @@ class CoffeeShopSim:
             self.coffeeInv -= cupsSold
             self.incDay()
 
-    def siumulate(self, temp, advertising, cupPrice):
+    def simulate(self, temp, advertising, cupPrice):
         # Calculate cups sold.
         cupsSold = self.dailySales(temp, advertising)
 
@@ -123,45 +100,37 @@ class CoffeeShopSim:
 
         for i in range(self.TEMPMIN, self.TEMPMAX):
             distFromAvg = abs(avg - i)
+            distFromMaxDist = maxDistFromAvg - distFromAvg
 
-def dailyStats(cashOnHand, weather, coffeeInv):
-    print(f'You have ${cashOnHand:.2f} cash on hand and the temperature is {weather} degrees.')
-    print(f'You have enough coffee on hand to make {coffeeInv} cups of coffee.\n')
+            # If the value is zero, change it to 1.
+            if distFromMaxDist == 0:
+                distFromMaxDist = 1
+            # Add the output from xOFy to the temps list.
+            for t in xOFy(int(distFromMaxDist), i):
+                temps.append(t)
+            return temps
+    
+    def incDay(self):
+        self.day += 1
 
-def getWeather():
-    # Generate a random temp between 20 and 90.
-    return random.randint(20, 91)
+    def dailyStats(self, temp):
+        print(f'You have ${self.cash:.2f} cash on hand and the temperature is {temp} degrees.')
+        print(f'You have enough coffee on hand to make {self.coffeeInv} cups of coffee.\n')
 
-# Print welcome message.
+    def dayHeader(self):
+        print(f'\n-----| Day {self.day} at {self.shopName} |-----')
+    
+    def dailySales(self, temp, advertising):
+        return int((self.TEMPMAX - temp) * (advertising * 0.5))
+    
+    @property
+    def weather(self):
+        return random.choice(self.temps)
+
 welcome()
+playerName = prompt("What is your name? ")
+playerShop = prompt("What is the name of your coffee shop? ")
 
-# Get name and store name.
-name = prompt('Enter your name.\n')
-storeName = prompt('Enter the name of your coffee shop.\n')
+game = CoffeeShopSim(playerName, playerShop)
 
-print("Ok, let's get started!")
-
-# Main game loop.
-running = True
-while running:
-    # Display the day with a text effect.
-    print(f'\n-----| Day {day} at {storeName} |-----')
-    temp = getWeather()
-
-    # Display cash and weather.
-    dailyStats(cash, temp, coffee)
-
-    # Get price of a cup of coffee.
-    cupPrice = prompt('What will you charge for a cup of coffee? ')
-
-    # Get advertising budget.
-    print('\nYou can buy advertising to help promote sales.')
-    advertising = convertToFloat(prompt("How much do you want to spend on advertising? (0 for none) ", False))
-
-    cash -= advertising
-
-    # TODO: Calculate the day's stats.
-    # TODO: Display the day's stats.
-
-    # Move to next day.
-    day += 1
+game.run()
