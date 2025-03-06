@@ -27,14 +27,14 @@ def convertToFloat(num: int) -> float:
 
 def xOFy(x: int, y: int) -> list:
     numList = []
-    for i in range(x):
+    for _ in range(x):
         numList.append(y)
     return numList
 
 class CoffeeShopSim:
 
     TEMPMIN = 20
-    TEMPMAX = 91
+    TEMPMAX = 90
 
     def __init__(self, playerName, shopName):
         self.playerName = playerName
@@ -54,7 +54,7 @@ class CoffeeShopSim:
             self.dayHeader()
 
             # Get the weather for the day.
-            temp = self.weather
+            temp = self.weather()
 
             # Display the cash and the weather.
             self.dailyStats(temp)
@@ -108,7 +108,7 @@ class CoffeeShopSim:
             # Add the output from xOFy to the temps list.
             for t in xOFy(int(distFromMaxDist), i):
                 temps.append(t)
-            return temps
+        return temps
     
     def incDay(self):
         self.day += 1
@@ -123,7 +123,6 @@ class CoffeeShopSim:
     def dailySales(self, temp, advertising):
         return int((self.TEMPMAX - temp) * (advertising * 0.5))
     
-    @property
     def weather(self):
         return random.choice(self.temps)
 
