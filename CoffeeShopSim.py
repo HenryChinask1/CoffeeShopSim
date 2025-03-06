@@ -79,6 +79,11 @@ class CoffeeShopSim:
             self.coffeeInv -= cupsSold
             self.incDay()
 
+            # Offer an exit to the game.
+            quit = prompt('Would you like to continue selling coffee? (press any key or press Q to quit game)')
+            if quit.lower() == 'q':
+                running = False
+
     def simulate(self, temp, advertising, cupPrice):
         # Calculate cups sold.
         cupsSold = self.dailySales(temp, advertising)
