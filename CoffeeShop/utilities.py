@@ -25,10 +25,3 @@ def xOFy(x: int, y: int) -> list:
     for _ in range(x):
         numList.append(y)
     return numList
-
-def checkForEnoughCash(cash: float, purchase: float) -> float:
-    if cash - purchase >= 0:
-        return cash - purchase
-    else:
-        print(f'You do not have enough cash for the purchase {cash} dollars on hand.')
-        return cash

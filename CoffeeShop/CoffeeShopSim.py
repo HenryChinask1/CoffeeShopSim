@@ -34,20 +34,31 @@ class CoffeeShopSim:
             self.dailyStats(temp)
 
             # Get the price of a cup of coffee.
-            cupPrice = float(prompt("What do you want to charge for a cup of coffee? "))
-
-            # Get the advertising spend.
-            print('\nYou can buy advertising to help boost sales.')
-            advertising = float(prompt("How much do you want to spend on advertising? (0 for None) ", False))
-            advertising = convertToFloat(advertising)
+            cupPrice = prompt("What do you want to charge for a cup of coffee? (type exit to quit) ")
+            if re.search(r'^exit', cupPrice, re.IGNORECASE):
+                running = False
+            else:
+                cupPrice = convertToFloat(cupPrice)
 
             # Offer to purchase coffee inventory,
             print(f'You have {self.coffeeInv} units of coffee on hand.')
-            coffeePurchase = float(prompt('How much coffee do you want to purchase? (0 for None)', False))
+            coffeePurchase = prompt('How much coffee do you want to purchase? (0 for None)', False)
             coffeePurchase = convertToFloat(coffeePurchase)
-            self.checkForEnoughCash(self.cash, coffeePurchase)
-            
+            if self.checkForEnoughCash(self.cash, coffeePurchase):
+                self.cash -= coffeePurchase
+                self.coffeeInv += coffeePurchase
+            else:
+                coffeePurchase = 0
 
+            # Get the advertising spend.
+            print('\nYou can buy advertising to help boost sales.')
+            advertising = prompt("How much do you want to spend on advertising? (0 for None) ", False)
+            advertising = convertToFloat(advertising)
+            if self.checkForEnoughCash(self.cash, advertising):
+                self.cash -= advertising
+            else:
+                advertising = 0
+            
             # Simulate the sales for the day.
             cupsSold = self.simulate(temp, advertising, cupPrice, self.coffeeInv)
             grossProfit = cupsSold * cupPrice
@@ -116,8 +127,7 @@ class CoffeeShopSim:
     
     def checkForEnoughCash(self, cash: float, purchase: float) -> float:
         if cash - purchase >= 0:
-            self.cash -= purchase
-            self.coffeeInv += purchase
-            self.dailyStats
+            return True
         else:
             print(f'You do not have enough cash for the purchase, {cash} dollars on hand.')
+            return False
