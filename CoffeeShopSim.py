@@ -40,13 +40,13 @@ class CoffeeShopSim:
             print('\nYou can buy advertising to help boost sales.')
             advertising = float(prompt("How much do you want to spend on advertising? (0 for None) ", False))
             advertising = convertToFloat(advertising)
-            self.cash = checkForEnoughCash(self.cash, advertising)
 
             # Offer to purchase coffee inventory,
             print(f'You have {self.coffeeInv} units of coffee on hand.')
             coffeePurchase = float(prompt('How much coffee do you want to purchase? (0 for None)', False))
             coffeePurchase = convertToFloat(coffeePurchase)
-            self.cash = checkForEnoughCash(self.cash, coffeePurchase)
+            self.checkForEnoughCash(self.cash, coffeePurchase)
+            
 
             # Simulate the sales for the day.
             cupsSold = self.simulate(temp, advertising, cupPrice, self.coffeeInv)
@@ -112,3 +112,12 @@ class CoffeeShopSim:
     
     def weather(self):
         return random.choice(self.temps)
+    
+    
+    def checkForEnoughCash(self, cash: float, purchase: float) -> float:
+        if cash - purchase >= 0:
+            self.cash -= purchase
+            self.coffeeInv += purchase
+            self.dailyStats
+        else:
+            print(f'You do not have enough cash for the purchase, {cash} dollars on hand.')

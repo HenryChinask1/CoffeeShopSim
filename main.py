@@ -18,3 +18,5 @@ game = CoffeeShopSim(playerName, playerShop)
 
 # Run the game.
 game.run()
+
+print('\nThanks for playing!')
