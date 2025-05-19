@@ -1,0 +1,1 @@
+# The coffee shop simulator tutorial from the Python QuickStart Guide by Clydebank Media
